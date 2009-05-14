@@ -33,6 +33,16 @@ module Synthesis
         AssetPackage.sources_from_targets("stylesheets", sources))
 
       sources.collect { |source| stylesheet_link_tag(source, options) }.join("\n")    
+      if should_merge?
+        sources.collect { |source| stylesheet_link_tag(source, options) }.join("\n")    
+      else
+        sources.in_groups_of(30).collect do |group|
+          links = group.collect { |source|
+            %{@import url("#{stylesheet_path(source)}");\n} unless source.nil?
+          }.join("\n")    
+          %{<style type="text/css">\n#{links.strip}\n</style>}
+        end.join("\n")
+      end
     end
 
   end

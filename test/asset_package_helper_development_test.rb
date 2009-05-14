@@ -34,7 +34,10 @@ class AssetPackageHelperDevelopmentTest < Test::Unit::TestCase
   end
     
   def build_css_expected_string(*sources)
-    sources.map {|s| stylesheet_link_tag(s) }.join("\n")
+    string = "<style type=\"text/css\">\n"
+    string << sources.map {|s| %(@import url(\"/stylesheets/#{s}.css\");\n) }.join("\n")
+    string << "</style>"
+    string 
   end
     
   def test_js_basic
