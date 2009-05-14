@@ -158,14 +158,13 @@ rake asset:packager:delete_all       # Delete all asset builds
 
 == Running the tests
 
-This plugin has a full suite of tests. But since they
-depend on rails, it has to be run in the context of a
-rails app, in the vendor/plugins directory. Observe:
+For the tests, you need the dry_plugin_test_helper gem from
 
-> rails newtestapp
-> cd newtestapp
-> ./script/plugin install ./script/plugin install git://github.com/sbecker/asset_packager.git
-> rake test:plugins PLUGIN=asset_packager # all tests pass
+  gem install imedo-dry_plugin_test_helper -s http://gems.github.com
+
+To run, cd into the plugin directory and run
+
+  rake
 
 == License
 Copyright (c) 2006-2008 Scott Becker - http://synthesis.sbecker.net

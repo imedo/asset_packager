@@ -1,9 +1,4 @@
-require File.dirname(__FILE__) + '/../../../../config/environment'
-require 'test/unit'
-require 'mocha'
-
-$asset_packages_yml = YAML.load_file("#{RAILS_ROOT}/vendor/plugins/asset_packager/test/asset_packages.yml")
-$asset_base_path = "#{RAILS_ROOT}/vendor/plugins/asset_packager/test/assets"
+require File.expand_path(File.dirname(__FILE__) + "/abstract_unit")
 
 class AssetPackagerTest < Test::Unit::TestCase
   include Synthesis

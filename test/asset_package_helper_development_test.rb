@@ -1,18 +1,4 @@
-$:.unshift(File.dirname(__FILE__) + '/../lib')
-
-ENV['RAILS_ENV'] = "development"
-require File.dirname(__FILE__) + '/../../../../config/environment'
-require 'test/unit'
-require 'rubygems'
-require 'mocha'
-
-require 'action_controller/test_process'
-
-ActionController::Base.logger = nil
-ActionController::Routing::Routes.reload rescue nil
-
-$asset_packages_yml = YAML.load_file("#{RAILS_ROOT}/vendor/plugins/asset_packager/test/asset_packages.yml")
-$asset_base_path = "#{RAILS_ROOT}/vendor/plugins/asset_packager/test/assets"
+require File.expand_path(File.dirname(__FILE__) + "/abstract_unit")
 
 class AssetPackageHelperDevelopmentTest < Test::Unit::TestCase
   include ActionView::Helpers::TagHelper
@@ -21,6 +7,7 @@ class AssetPackageHelperDevelopmentTest < Test::Unit::TestCase
 
   def setup
     Synthesis::AssetPackage.any_instance.stubs(:log)
+    self.stubs(:should_merge?).returns(false)
 
     @controller = Class.new do
       def request

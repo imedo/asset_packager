@@ -4,6 +4,8 @@ module Synthesis
     # class variables
     @@asset_packages_yml = $asset_packages_yml || 
       (File.exists?("#{RAILS_ROOT}/config/asset_packages.yml") ? YAML.load_file("#{RAILS_ROOT}/config/asset_packages.yml") : nil)
+    @@tmp_base_dir = $tmp_basedir || RAILS_ROOT
+    @@jsmin_path =  $jsmin_path || "#{RAILS_ROOT}/vendor/plugins/asset_packager/lib"
   
     # singleton methods
     class << self
@@ -155,14 +157,13 @@ module Synthesis
       end
 
       def compress_js(source)
-        jsmin_path = "#{RAILS_ROOT}/vendor/plugins/asset_packager/lib"
-        tmp_path = "#{RAILS_ROOT}/tmp/#{@target}_packaged"
+        tmp_path = "#{@@tmp_base_dir}/tmp/#{@target}_packaged"
       
         # write out to a temp file
         File.open("#{tmp_path}_uncompressed.js", "w") {|f| f.write(source) }
       
         # compress file with JSMin library
-        `ruby #{jsmin_path}/jsmin.rb <#{tmp_path}_uncompressed.js >#{tmp_path}_compressed.js \n`
+        `ruby #{@@jsmin_path}/jsmin.rb <#{tmp_path}_uncompressed.js >#{tmp_path}_compressed.js \n`
 
         # read it back in and trim it
         result = ""
