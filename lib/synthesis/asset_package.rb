@@ -120,7 +120,8 @@ module Synthesis
     end
 
     def build
-      delete_previous_build
+      # Commented out because we want to deploy new assets while the server is running. Therefore we need the old packages.
+      # delete_old_builds
       create_new_build
     end
 
@@ -131,12 +132,8 @@ module Synthesis
     private
       def create_new_build
         new_build_path = "#{@asset_path}/#{@target}_packaged.#{@extension}"
-        if File.exists?(new_build_path)
-          log "Latest version already exists: #{new_build_path}"
-        else
-          File.open(new_build_path, "w") {|f| f.write(compressed_file) }
-          log "Created #{new_build_path}"
-        end
+        File.open(new_build_path, "w") {|f| f.write(compressed_file) }
+        log "Created #{new_build_path}"
       end
 
       def merged_file
